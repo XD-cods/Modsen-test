@@ -14,11 +14,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Service
 @RequiredArgsConstructor
 public class BookService {
   private final BookRepo bookRepo;
   private final ModelMapper modelMapper;
+  private final LibraryService libraryService;
 
   @Transactional
   public List<BookDTO> getAllBooks(Optional<String> optionalPrefixName) {
@@ -47,11 +50,16 @@ public class BookService {
   public BookDTO addBook(BookDTO bookDTO) {
 
     Book book = modelMapper.map(bookDTO, Book.class);
+    book = bookRepo.save(book);
+    libraryService.addBookToLibraryRecord(book);
     return modelMapper.map(bookRepo.save(book), BookDTO.class);
   }
 
   @Transactional
   public Boolean deleteBook(Long bookId) {
+
+    bookRepo.findById(bookId)
+            .orElseThrow(()-> new NotFoundException("Book not found by id: " + id));
 
     bookRepo.deleteById(bookId);
     return true;
