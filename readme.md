@@ -32,6 +32,19 @@
    b. Время, когда книгу взяли;
    c. Время, когда книгу нужно вернуть.
 
+### Функционал API
+
+1. Получение списка свободных книг.
+2. Изменение информации о книге.
+
+3. Spring, Boot, MVC.
+4. ORM: Hibernate, Spring Data, Jpa.
+5. RDBMS: MySql, MSSql or PostgreSQL or any other.
+6. ModelMapper, MapStruct or any other;
+7. Authentication via bearer token;
+8. Swagger
+
+
 ### Перед запуском
 
 Установите postgreSQL и добавьте данные в src/main/resources/application.properties.
