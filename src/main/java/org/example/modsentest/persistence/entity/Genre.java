@@ -1,4 +1,4 @@
-package org.example.modsentest.models;
+package org.example.modsentest.persistence.entity;
 
 public enum Genre {
   FANTASY("fantasy"),

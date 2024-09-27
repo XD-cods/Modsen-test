@@ -1,4 +1,4 @@
-package org.example.modsentest.exceptions;
+package org.example.modsentest.exception;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;

@@ -1,12 +1,11 @@
-package org.example.modsentest.DTO;
-
+package org.example.modsentest.web.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.modsentest.models.Genre;
+import org.example.modsentest.persistence.entity.Genre;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookDTO {
-  private Long id;
+public class BookResponse {
 
   @JsonProperty(value = "isbn")
   private String ISBN;

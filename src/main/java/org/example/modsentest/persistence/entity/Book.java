@@ -1,4 +1,4 @@
-package org.example.modsentest.models;
+package org.example.modsentest.persistence.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
