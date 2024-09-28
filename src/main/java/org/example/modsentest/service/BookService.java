@@ -31,8 +31,9 @@ public class BookService {
     optionalPrefixName = optionalPrefixName.filter(prefixName -> !prefixName.trim().isEmpty());
 
     Stream<Book> bookStream = optionalPrefixName
-            .map(bookRepository::streamAllByTitleStartsWithIgnoreCase)
-            .orElseGet(bookRepository::streamAllBy);
+            .map(bookRepository::findAllByTitleStartsWithIgnoreCase)
+            .orElseGet(bookRepository::findAllBy)
+            .stream();
 
     return ResponseEntity.ok(bookStream
             .map((book) -> modelMapper.map(book, BookResponse.class))

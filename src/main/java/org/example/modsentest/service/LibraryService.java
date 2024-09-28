@@ -34,7 +34,8 @@ public class LibraryService {
   public ResponseEntity<List<LibraryRecordResponse>> getAllNoBorrowedBooks() {
 
     Stream<LibraryRecord> borrowedBookStream = libraryRecordRepository
-            .streamByBorrowedDateNull();
+            .findByBorrowedDateNull()
+            .stream();
 
     return ResponseEntity.ok(borrowedBookStream
             .map((element) -> modelMapper.map(element, LibraryRecordResponse.class))
@@ -70,7 +71,8 @@ public class LibraryService {
   public ResponseEntity<List<LibraryRecordResponse>> getAllBorrowedBooksRecord() {
 
     return ResponseEntity.ok(libraryRecordRepository
-            .streamAllBy()
+            .findAllBy()
+            .stream()
             .filter(libraryRecord -> libraryRecord.getBorrowedDate() != null)
             .map((element) -> modelMapper.map(element, LibraryRecordResponse.class))
             .toList());
@@ -80,7 +82,8 @@ public class LibraryService {
   public ResponseEntity<List<LibraryRecordResponse>> getAllRecord() {
 
     return ResponseEntity.ok(libraryRecordRepository
-            .streamAllBy()
+            .findAllBy()
+            .stream()
             .map((element) -> modelMapper.map(element, LibraryRecordResponse.class))
             .toList());
   }

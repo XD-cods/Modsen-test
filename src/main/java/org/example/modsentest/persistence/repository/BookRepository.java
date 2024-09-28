@@ -4,11 +4,12 @@ import org.example.modsentest.persistence.entity.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-  Stream<Book> streamAllBy();
+  List<Book> findAllBy();
 
-  Stream<Book> streamAllByTitleStartsWithIgnoreCase(String prefix);
+  List<Book> findAllByTitleStartsWithIgnoreCase(String prefix);
 }
