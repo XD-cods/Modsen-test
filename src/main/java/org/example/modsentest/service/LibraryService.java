@@ -6,8 +6,8 @@ import org.example.modsentest.exception.NotFoundException;
 import org.example.modsentest.persistence.entity.Book;
 import org.example.modsentest.persistence.entity.LibraryRecord;
 import org.example.modsentest.persistence.repository.LibraryRecordRepository;
+import org.example.modsentest.util.mapper.LibraryRecordMapper;
 import org.example.modsentest.web.response.LibraryRecordResponse;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class LibraryService {
   private final LibraryRecordRepository libraryRecordRepository;
-  private final ModelMapper modelMapper;
+  private final LibraryRecordMapper libraryRecordMapper;
 
   @Transactional
   public void addBookToLibraryRecord(Book book) {
@@ -27,7 +27,6 @@ public class LibraryService {
     LibraryRecord libraryRecord = new LibraryRecord(book);
 
     libraryRecordRepository.save(libraryRecord);
-    modelMapper.map(libraryRecord, LibraryRecordResponse.class);
   }
 
   @Transactional
@@ -38,7 +37,7 @@ public class LibraryService {
             .stream();
 
     return ResponseEntity.ok(borrowedBookStream
-            .map((element) -> modelMapper.map(element, LibraryRecordResponse.class))
+            .map(libraryRecordMapper::toResponse)
             .toList());
   }
 
@@ -51,7 +50,8 @@ public class LibraryService {
     libraryRecord.setBorrowedDate(borrowDate);
     libraryRecord.setReturnedDate(returnDate);
 
-    return ResponseEntity.ok(modelMapper.map(libraryRecord, LibraryRecordResponse.class));
+    libraryRecord = libraryRecordRepository.save(libraryRecord);
+    return ResponseEntity.ok(libraryRecordMapper.toResponse(libraryRecord));
   }
 
   @Transactional
@@ -64,7 +64,8 @@ public class LibraryService {
     libraryRecord.setReturnedDate(null);
 
     LibraryRecord addedLibraryRecord = libraryRecordRepository.save(libraryRecord);
-    return ResponseEntity.ok(modelMapper.map(addedLibraryRecord, LibraryRecordResponse.class));
+
+    return ResponseEntity.ok(libraryRecordMapper.toResponse(addedLibraryRecord));
   }
 
   @Transactional
@@ -74,7 +75,7 @@ public class LibraryService {
             .findAllBy()
             .stream()
             .filter(libraryRecord -> libraryRecord.getBorrowedDate() != null)
-            .map((element) -> modelMapper.map(element, LibraryRecordResponse.class))
+            .map(libraryRecordMapper::toResponse)
             .toList());
   }
 
@@ -84,7 +85,7 @@ public class LibraryService {
     return ResponseEntity.ok(libraryRecordRepository
             .findAllBy()
             .stream()
-            .map((element) -> modelMapper.map(element, LibraryRecordResponse.class))
+            .map(libraryRecordMapper::toResponse)
             .toList());
   }
 }

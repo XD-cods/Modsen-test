@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.modsentest.exception.NotFoundException;
 import org.example.modsentest.persistence.entity.Book;
 import org.example.modsentest.persistence.repository.BookRepository;
+import org.example.modsentest.util.mapper.BookMapper;
 import org.example.modsentest.web.request.BookRequest;
 import org.example.modsentest.web.response.BookResponse;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +22,8 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 @RequiredArgsConstructor
 public class BookService {
   private final BookRepository bookRepository;
-  private final ModelMapper modelMapper;
   private final LibraryService libraryService;
+  private final BookMapper bookMapper;
 
   @Transactional
   public ResponseEntity<List<BookResponse>> getAllBooks(Optional<String> optionalPrefixName) {
@@ -36,7 +36,7 @@ public class BookService {
             .stream();
 
     return ResponseEntity.ok(bookStream
-            .map((book) -> modelMapper.map(book, BookResponse.class))
+            .map(bookMapper::toResponse)
             .toList());
   }
 
@@ -45,17 +45,17 @@ public class BookService {
 
     return ResponseEntity.ok(bookRepository
             .findById(id)
-            .map(book -> modelMapper.map(book, BookResponse.class))
+            .map(bookMapper::toResponse)
             .orElseThrow(() -> new NotFoundException("Book not found by id: " + id)));
   }
 
   @Transactional
-  public ResponseEntity<BookResponse> addBook(BookRequest BookResponse) {
+  public ResponseEntity<BookResponse> addBook(BookRequest bookRequest) {
 
-    Book book = modelMapper.map(BookResponse, Book.class);
+    Book book = bookMapper.requestToEntity(bookRequest);
     book = bookRepository.save(book);
     libraryService.addBookToLibraryRecord(book);
-    return ResponseEntity.ok(modelMapper.map(bookRepository.save(book), BookResponse.class));
+    return ResponseEntity.ok(bookMapper.toResponse(book));
   }
 
   @Transactional
@@ -75,13 +75,12 @@ public class BookService {
             .findById(id)
             .orElseThrow(() -> new NotFoundException("Book not found by id: " + id));
 
-    modelMapper.map(BookResponse, existingBook);
     if (!BookResponse.getGenre().isEmpty()) {
       existingBook.setGenre(BookResponse.getGenre());
     }
 
     bookRepository.save(existingBook);
-    return ResponseEntity.ok(modelMapper.map(existingBook, BookResponse.class));
+    return ResponseEntity.ok(bookMapper.toResponse(existingBook));
   }
 
 }
