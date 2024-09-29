@@ -1,4 +1,4 @@
-package org.example.modsentest.DTO;
+package org.example.modsentest.web.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class LibraryRecordDTO {
+@AllArgsConstructor
+public class LibraryRecordResponse {
 
   @JsonProperty("book_id")
   private Long bookId;

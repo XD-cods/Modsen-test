@@ -1,13 +1,19 @@
-package org.example.modsentest.controller;
+package org.example.modsentest.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.example.modsentest.DTO.LibraryRecordDTO;
-import org.example.modsentest.services.LibraryService;
-import org.springframework.web.bind.annotation.*;
+import org.example.modsentest.service.LibraryService;
+import org.example.modsentest.web.response.LibraryRecordResponse;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,7 +32,7 @@ public class LibraryRecordController {
           @ApiResponse(responseCode = "400", description = "Ошибка в запросе")
   })
   @GetMapping
-  public List<LibraryRecordDTO> getAllRecords() {
+  public ResponseEntity<List<LibraryRecordResponse>> getAllRecords() {
     return libraryService.getAllRecord();
   }
 
@@ -38,7 +44,7 @@ public class LibraryRecordController {
           @ApiResponse(responseCode = "400", description = "Ошибка в запросе")
   })
   @GetMapping("/release")
-  public List<LibraryRecordDTO> getNoBorrowedBooks() {
+  public ResponseEntity<List<LibraryRecordResponse>> getNoBorrowedBooks() {
     return libraryService.getAllNoBorrowedBooks();
   }
 
@@ -50,7 +56,7 @@ public class LibraryRecordController {
           @ApiResponse(responseCode = "400", description = "Ошибка в запросе")
   })
   @GetMapping("/borrow")
-  public List<LibraryRecordDTO> getAllBorrowedBooksRecord() {
+  public ResponseEntity<List<LibraryRecordResponse>> getAllBorrowedBooksRecord() {
     return libraryService.getAllBorrowedBooksRecord();
   }
 
@@ -61,7 +67,7 @@ public class LibraryRecordController {
           @ApiResponse(responseCode = "400", description = "Ошибка в запросе")
   })
   @PatchMapping("/borrow/{bookId}")
-  public LibraryRecordDTO borrowBook(
+  public ResponseEntity<LibraryRecordResponse> borrowBook(
           @Parameter(description = "ID книги", required = true) @PathVariable("bookId") Long bookId,
           @Parameter(description = "Дата взятия", required = true) @RequestParam("borrow_date") LocalDate borrowDate,
           @Parameter(description = "Дата возврата", required = true) @RequestParam("return_date") LocalDate returnDate) {
@@ -75,7 +81,7 @@ public class LibraryRecordController {
           @ApiResponse(responseCode = "400", description = "Ошибка в запросе")
   })
   @PatchMapping("/release/{bookId}")
-  public LibraryRecordDTO releaseBook(
+  public ResponseEntity<LibraryRecordResponse> releaseBook(
           @Parameter(description = "ID книги", required = true) @PathVariable("bookId") Long bookId) {
     return libraryService.releaseBook(bookId);
   }
