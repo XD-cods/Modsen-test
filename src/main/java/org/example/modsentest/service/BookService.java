@@ -62,7 +62,7 @@ public class BookService {
   public ResponseEntity<Boolean> deleteBook(Long bookId) {
 
     bookRepository.findById(bookId)
-            .orElseThrow(()-> new NotFoundException("Book not found by id: " + id));
+            .orElseThrow(() -> new NotFoundException("Book not found by id: " + id));
 
     bookRepository.deleteById(bookId);
     return ResponseEntity.ok(true);

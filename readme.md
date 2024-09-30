@@ -1,6 +1,7 @@
 ## ТЗ
 
 ### Описание
+
 Разработка CRUD Web API для имитации библиотеки (создание, изменение, удаление,
 получение), выполняется на Spring.
 Должна прилагаться инструкция по запуску проекта.
@@ -23,6 +24,7 @@
 5. Автор;
 
 ### Дополнительный Функционал Web API
+
 1. Разработать дополнительный сервис (LibraryService), ведущей учет
    свободных книг.
 2. При добавлении новой книги в первый сервис, отправляется запрос
@@ -44,10 +46,10 @@
 7. Authentication via bearer token;
 8. Swagger
 
-
 ### Перед запуском
 
 Установите postgreSQL и добавьте данные в src/main/resources/application.properties.
+
 ```properties
 spring.datasource.url= your JDBC URI
 spring.datasource.password= your password
@@ -55,12 +57,12 @@ spring.datasource.username= your usename
 
 ```
 
-Выполните скрипт создания таблиц расположенный в папке sripts create_db.sql 
-
+Выполните скрипт создания таблиц расположенный в папке sripts create_db.sql
 
 ### Запуск приложения
 
 выполните команду
+
 ```bash
 ./mvnw spring-boot:run
 ```
