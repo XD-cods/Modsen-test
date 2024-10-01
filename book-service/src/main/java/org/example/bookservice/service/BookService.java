@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.bookservice.exception.NotFoundException;
 import org.example.bookservice.persistence.entity.Book;
 import org.example.bookservice.persistence.repository.BookRepository;
+import org.example.bookservice.util.feign.LibraryServiceClient;
 import org.example.bookservice.util.mapper.BookMapper;
 import org.example.bookservice.web.request.BookRequest;
 import org.example.bookservice.web.response.BookResponse;
@@ -23,6 +24,7 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 public class BookService {
   private final BookRepository bookRepository;
   private final BookMapper bookMapper;
+  private final LibraryServiceClient libraryServiceClient;
 
   @Transactional
   public ResponseEntity<List<BookResponse>> getAllBooks(Optional<String> optionalPrefixName) {
@@ -48,13 +50,13 @@ public class BookService {
             .orElseThrow(() -> new NotFoundException("Book not found by id: " + id)));
   }
 
-  @Transactional
   public ResponseEntity<BookResponse> addBook(BookRequest bookRequest) {
 
     Book book = bookMapper.requestToEntity(bookRequest);
     book = bookRepository.save(book);
-//    libraryService.addBookToLibraryRecord(book);
-    //todo: Create post request in library server
+    bookRequest = bookMapper.toRequest(book);
+
+    libraryServiceClient.addBookToLibraryRecord(bookRequest, book.getId());
     return ResponseEntity.ok(bookMapper.toResponse(book));
   }
 

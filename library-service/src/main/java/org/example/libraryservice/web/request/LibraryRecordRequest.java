@@ -12,6 +12,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class LibraryRecordRequest {
 
+
+  @JsonProperty("record_id")
+  private Long recordId;
+
   @JsonProperty("book_id")
   private Long bookId;
 
@@ -21,3 +25,4 @@ public class LibraryRecordRequest {
   @JsonProperty("returned_date")
   private LocalDate returnedDate;
 }
+

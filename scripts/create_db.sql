@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS library.book (
 );
 
 CREATE TABLE IF NOT EXISTS library.library_record (
-                                                      id BIGINT PRIMARY KEY,
+                                                      id BIGSERIAL PRIMARY KEY,
                                                       borrowed_date DATE DEFAULT CURRENT_DATE,
                                                       returned_date DATE,
                                                       book_id BIGINT NOT NULL,

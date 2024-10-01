@@ -1,13 +1,15 @@
-package org.example.modsentest.service;
+package org.example.libraryservice.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.example.modsentest.exception.NotFoundException;
-import org.example.modsentest.persistence.entity.Book;
-import org.example.modsentest.persistence.entity.LibraryRecord;
-import org.example.modsentest.persistence.repository.LibraryRecordRepository;
-import org.example.modsentest.util.mapper.LibraryRecordMapper;
-import org.example.modsentest.web.response.LibraryRecordResponse;
+import org.example.libraryservice.exception.NotFoundException;
+import org.example.libraryservice.persistence.entity.Book;
+import org.example.libraryservice.persistence.entity.LibraryRecord;
+import org.example.libraryservice.persistence.repository.LibraryRecordRepository;
+import org.example.libraryservice.util.mapper.BookMapper;
+import org.example.libraryservice.util.mapper.LibraryRecordMapper;
+import org.example.libraryservice.web.request.BookRequest;
+import org.example.libraryservice.web.response.LibraryRecordResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +19,20 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class LibraryService {
+public class LibraryRecordService {
   private final LibraryRecordRepository libraryRecordRepository;
   private final LibraryRecordMapper libraryRecordMapper;
+  private final BookMapper bookMapper;
 
   @Transactional
-  public void addBookToLibraryRecord(Book book) {
+  public void addBookToLibraryRecord(BookRequest bookRequest, Long bookId) {
 
-    LibraryRecord libraryRecord = new LibraryRecord(book);
+    Book book = bookMapper.requestToEntity(bookRequest);
+    book.setId(bookId);
+    LibraryRecord libraryRecord = LibraryRecord
+            .builder()
+            .book(book)
+            .build();
 
     libraryRecordRepository.save(libraryRecord);
   }
@@ -42,10 +50,10 @@ public class LibraryService {
   }
 
   @Transactional
-  public ResponseEntity<LibraryRecordResponse> borrowBook(Long bookId, LocalDate borrowDate, LocalDate returnDate) {
+  public ResponseEntity<LibraryRecordResponse> borrowBook(Long recordId, LocalDate borrowDate, LocalDate returnDate) {
 
-    LibraryRecord libraryRecord = libraryRecordRepository.findByBookId(bookId)
-            .orElseThrow(() -> new NotFoundException("Book not found by id: " + bookId));
+    LibraryRecord libraryRecord = libraryRecordRepository.findById(recordId)
+            .orElseThrow(() -> new NotFoundException("Book not found by id: " + recordId));
 
     libraryRecord.setBorrowedDate(borrowDate);
     libraryRecord.setReturnedDate(returnDate);
@@ -55,10 +63,10 @@ public class LibraryService {
   }
 
   @Transactional
-  public ResponseEntity<LibraryRecordResponse> releaseBook(Long bookId) {
+  public ResponseEntity<LibraryRecordResponse> releaseBook(Long recordId) {
 
-    LibraryRecord libraryRecord = libraryRecordRepository.findByBookId(bookId)
-            .orElseThrow(() -> new NotFoundException("Book not found by id: " + bookId));
+    LibraryRecord libraryRecord = libraryRecordRepository.findById(recordId)
+            .orElseThrow(() -> new NotFoundException("Book not found by id: " + recordId));
 
     libraryRecord.setBorrowedDate(null);
     libraryRecord.setReturnedDate(null);

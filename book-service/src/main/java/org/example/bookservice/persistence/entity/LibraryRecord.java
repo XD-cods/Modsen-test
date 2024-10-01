@@ -2,6 +2,8 @@ package org.example.bookservice.persistence.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -24,20 +26,15 @@ import java.time.LocalDate;
 @Table(name = "library_record", schema = "library")
 public class LibraryRecord {
 
-  public LibraryRecord(Book book) {
-    this.book = book;
-    id = book.getId();
-  }
-
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
 
-  @Builder.Default
-  private LocalDate borrowedDate = LocalDate.now();
+  private LocalDate borrowedDate;
 
   private LocalDate returnedDate;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.REMOVE)
   @JoinColumn(name = "book_id")
   @NotNull
   private Book book;

@@ -1,10 +1,10 @@
-package org.example.modsentest;
+package org.example.libraryservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ModsenTestApplicationTests {
+class LibraryRecordServiceApplicationTests {
 
   @Test
   void contextLoads() {

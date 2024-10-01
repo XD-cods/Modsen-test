@@ -1,11 +1,11 @@
-package org.example.modsentest.web.response;
+package org.example.libraryservice.web.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.modsentest.persistence.entity.Genre;
+import org.example.libraryservice.persistence.entity.Genre;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookResponse {
+public class BookRequest {
 
   @JsonProperty(value = "isbn")
   private String ISBN;
