@@ -48,28 +48,56 @@
 
 ### Перед запуском
 
-Установите postgreSQL и добавьте данные в src/main/resources/application.properties.
+Установите postgreSQL и добавьте данные в config-server/src/main/resources/config
+поменять в book-service и в library-service на свои значения
 
-```properties
-spring.datasource.url= your JDBC URI
-spring.datasource.password= your password
-spring.datasource.username= your usename
-
+```yaml
+    username: postgres
+    password: 1111
+    url: jdbc:postgresql://localhost:5432/postgres
 ```
 
 Выполните скрипт создания таблиц расположенный в папке sripts create_db.sql
 
+
 ### Запуск приложения
 
-выполните команду
+выполнить команду для упарковки каждого микросервиса:
 
-```bash
-./mvnw spring-boot:run
+```
+make mBuild
+```
+или
+
+```
+mvn clean package -DskipTests
+```
+
+выполнить запуск jar файлов
+
+```
+java -jar eureka-server/target/eureka-server-0.0.1-SNAPSHOT.jar
+```
+
+```
+java -jar conig-server/target/config-server-0.0.1-SNAPSHOT.jar
+```
+
+```
+java -jar library-service/target/library-service-0.0.1-SNAPSHOT.jar
+```
+
+```
+java -jar book-service/target/book-service-0.0.1-SNAPSHOT.jar
+```
+
+```
+java -jar api-gateway/target/api-gateway-0.0.1-SNAPSHOT.jar
 ```
 
 ### Swagger
 
 переходим по ссылке на swagger сайт
 
-<http://localhost:8080/swagger-ui/index.html>
+<http://localhost:8080/swagger-ui.html>
 
