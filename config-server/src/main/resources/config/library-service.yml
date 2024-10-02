@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    username: postgres
+    password: 1111
+    url: jdbc:postgresql://localhost:5432/postgres
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+openapi:
+  service:
+    title: library-service doc
+    version: 1.0.0
+    url: http://localhost:8080/library-service
+
+server:
+  port: 0
