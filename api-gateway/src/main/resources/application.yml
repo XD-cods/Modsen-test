@@ -1,0 +1,46 @@
+server:
+
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: book-service
+          uri: lb://book-service
+          predicates:
+            - Path=/book-service/** , /book-service/v3/api-docs
+          filters:
+            - StripPrefix=1
+        - id:
+          uri: lb://library-service
+          predicates:
+            - Path=/library-service/** , /library-service/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /book-service/v3/api-docs
+        name: Book Service
+        display-name: Book Service
+      - url: /library-service/v3/api-docs
+        name: Library Service
+        display-name: Library Service
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: localhost
