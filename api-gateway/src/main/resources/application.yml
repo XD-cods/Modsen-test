@@ -1,7 +1,3 @@
-server:
-
-  port: 8080
-
 spring:
   application:
     name: api-gateway
@@ -36,11 +32,3 @@ springdoc:
       - url: /library-service/v3/api-docs
         name: Library Service
         display-name: Library Service
-
-
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-  instance:
-    hostname: localhost

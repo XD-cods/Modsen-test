@@ -1,23 +1,11 @@
-server:
-  port: 0
+spring:
+  application:
+    name: library-service
+  config:
+    import: "configserver:"
 
 springdoc:
   api-docs:
     path: /library-service/v3/api-docs
   swagger-ui:
     path: /library-service/swagger-ui.html
-
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-  instance:
-    hostname: localhost
-
-spring:
-  application:
-    name: library-service
-  config:
-    import: "configserver:"
