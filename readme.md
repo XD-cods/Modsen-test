@@ -49,7 +49,7 @@
 ### Перед запуском
 
 Установите postgreSQL и добавьте данные в config-server/src/main/resources/config
-поменять в book-service и в library-service на свои значения
+поменять в application.yml на свои значения
 
 ```yaml
     username: postgres
