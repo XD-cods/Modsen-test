@@ -6,6 +6,6 @@ spring:
 
 springdoc:
   api-docs:
-    path: /library-service/v3/api-docs
+    path: /api/record/v3/api-docs
   swagger-ui:
-    path: /library-service/swagger-ui.html
+    path: /api/record/swagger-ui.html

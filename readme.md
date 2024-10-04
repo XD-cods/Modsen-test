@@ -49,16 +49,18 @@
 ### Перед запуском
 
 Установите postgreSQL и добавьте данные в config-server/src/main/resources/config
-поменять в application.yml на свои значения
+поменять в application.yml на свои значения и можете поставить свой secret для аунефикации минимум 32 символа
 
 ```yaml
     username: postgres
     password: 1111
     url: jdbc:postgresql://localhost:5432/postgres
+    
+jwt:
+   secret: your key
 ```
 
 Выполните скрипт создания таблиц расположенный в папке sripts create_db.sql
-
 
 ### Запуск приложения
 
@@ -67,6 +69,7 @@
 ```
 make mBuild
 ```
+
 или
 
 ```
@@ -89,6 +92,10 @@ java -jar library-service/target/library-service-0.0.1-SNAPSHOT.jar
 
 ```
 java -jar book-service/target/book-service-0.0.1-SNAPSHOT.jar
+```
+
+```
+java -jar auth-service/target/auth-service-0.0.1-SNAPSHOT.jar
 ```
 
 ```
