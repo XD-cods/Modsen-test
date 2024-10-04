@@ -1,13 +1,8 @@
 server:
   port: 0
 
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: validate
-
 openapi:
   service:
-    title: book-service doc
+    title: auth-service doc
     version: 1.0.0
     url: http://localhost:8080/

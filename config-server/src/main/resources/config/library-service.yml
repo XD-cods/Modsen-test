@@ -10,4 +10,4 @@ openapi:
   service:
     title: library-service doc
     version: 1.0.0
-    url: http://localhost:8080/library-service
+    url: http://localhost:8080/

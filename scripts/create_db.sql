@@ -16,3 +16,10 @@ CREATE TABLE IF NOT EXISTS library.library_record (
                                                       book_id BIGINT NOT NULL,
                                                       CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES library.book (book_id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS library.user  (
+    user_id BIGSERIAL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) DEFAULT 'ROLE_USER'
+);
