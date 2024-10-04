@@ -1,8 +1,4 @@
-server:
-  port: 0
-
 spring:
-
   application:
     name: book-service
   config:
@@ -10,16 +6,6 @@ spring:
 
 springdoc:
   api-docs:
-    path: /book-service/v3/api-docs
+    path: /api/book/v3/api-docs
   swagger-ui:
-    path: /book-service/swagger-ui.html
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-  instance:
-    hostname: localhost
-
-
+    path: /api/book/swagger-ui.html
