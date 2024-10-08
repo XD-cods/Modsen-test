@@ -2,7 +2,7 @@ CREATE SCHEMA IF NOT EXISTS library;
 
 CREATE TABLE IF NOT EXISTS library.book (
                                             book_id BIGSERIAL PRIMARY KEY,
-                                            ISBN VARCHAR(255),
+                                            ISBN VARCHAR(255) UNIQUE,
                                             title VARCHAR(255),
                                             genre SMALLINT ARRAY,  -- Используем JSONB для хранения списка жанров
                                             description TEXT,

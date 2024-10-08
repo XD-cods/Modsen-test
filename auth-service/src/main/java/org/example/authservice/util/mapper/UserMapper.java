@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
   private final ModelMapper modelMapper;
 
-  public User registrRequestToUser(RegistrationRequest registrationRequest) {
+  public User registerRequestToUser(RegistrationRequest registrationRequest) {
     return modelMapper.map(registrationRequest, User.class);
   }
 }

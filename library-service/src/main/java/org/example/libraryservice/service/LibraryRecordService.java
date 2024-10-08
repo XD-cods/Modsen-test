@@ -10,7 +10,6 @@ import org.example.libraryservice.util.mapper.BookMapper;
 import org.example.libraryservice.util.mapper.LibraryRecordMapper;
 import org.example.libraryservice.web.request.BookRequest;
 import org.example.libraryservice.web.response.LibraryRecordResponse;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,6 +22,7 @@ public class LibraryRecordService {
   private final LibraryRecordRepository libraryRecordRepository;
   private final LibraryRecordMapper libraryRecordMapper;
   private final BookMapper bookMapper;
+  private final static String NOT_FOUND_RECORD_MESSAGE = "Book not found by id: %d";
 
   @Transactional
   public void addBookToLibraryRecord(BookRequest bookRequest, Long bookId) {
@@ -38,62 +38,62 @@ public class LibraryRecordService {
   }
 
   @Transactional
-  public ResponseEntity<List<LibraryRecordResponse>> getAllNoBorrowedBooks() {
+  public List<LibraryRecordResponse> getAllNoBorrowedBooks() {
 
     Stream<LibraryRecord> borrowedBookStream = libraryRecordRepository
             .findByBorrowedDateNull()
             .stream();
 
-    return ResponseEntity.ok(borrowedBookStream
+    return borrowedBookStream
             .map(libraryRecordMapper::toResponse)
-            .toList());
+            .toList();
   }
 
   @Transactional
-  public ResponseEntity<LibraryRecordResponse> borrowBook(Long recordId, LocalDate borrowDate, LocalDate returnDate) {
+  public LibraryRecordResponse borrowBook(Long recordId, LocalDate borrowDate, LocalDate returnDate) {
 
     LibraryRecord libraryRecord = libraryRecordRepository.findById(recordId)
-            .orElseThrow(() -> new NotFoundException("Book not found by id: " + recordId));
+            .orElseThrow(() -> new NotFoundException(String.format(NOT_FOUND_RECORD_MESSAGE, recordId)));
 
     libraryRecord.setBorrowedDate(borrowDate);
     libraryRecord.setReturnedDate(returnDate);
 
     libraryRecord = libraryRecordRepository.save(libraryRecord);
-    return ResponseEntity.ok(libraryRecordMapper.toResponse(libraryRecord));
+    return libraryRecordMapper.toResponse(libraryRecord);
   }
 
   @Transactional
-  public ResponseEntity<LibraryRecordResponse> releaseBook(Long recordId) {
+  public LibraryRecordResponse releaseBook(Long recordId) {
 
     LibraryRecord libraryRecord = libraryRecordRepository.findById(recordId)
-            .orElseThrow(() -> new NotFoundException("Book not found by id: " + recordId));
+            .orElseThrow(() -> new NotFoundException(String.format(NOT_FOUND_RECORD_MESSAGE, recordId)));
 
     libraryRecord.setBorrowedDate(null);
     libraryRecord.setReturnedDate(null);
 
     LibraryRecord addedLibraryRecord = libraryRecordRepository.save(libraryRecord);
 
-    return ResponseEntity.ok(libraryRecordMapper.toResponse(addedLibraryRecord));
+    return libraryRecordMapper.toResponse(addedLibraryRecord);
   }
 
   @Transactional
-  public ResponseEntity<List<LibraryRecordResponse>> getAllBorrowedBooksRecord() {
+  public List<LibraryRecordResponse> getAllBorrowedBooksRecord() {
 
-    return ResponseEntity.ok(libraryRecordRepository
+    return libraryRecordRepository
             .findAllBy()
             .stream()
             .filter(libraryRecord -> libraryRecord.getBorrowedDate() != null)
             .map(libraryRecordMapper::toResponse)
-            .toList());
+            .toList();
   }
 
   @Transactional
-  public ResponseEntity<List<LibraryRecordResponse>> getAllRecord() {
+  public List<LibraryRecordResponse> getAllRecord() {
 
-    return ResponseEntity.ok(libraryRecordRepository
+    return libraryRecordRepository
             .findAllBy()
             .stream()
             .map(libraryRecordMapper::toResponse)
-            .toList());
+            .toList();
   }
 }

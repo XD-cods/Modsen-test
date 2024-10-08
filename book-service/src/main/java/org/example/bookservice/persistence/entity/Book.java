@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,12 +29,12 @@ public class Book {
   @Column(name = "book_id")
   private Long id;
 
+  @Column(unique = true)
   private String ISBN;
 
   private String title;
 
-  @Builder.Default
-  private List<Genre> genre = new ArrayList<>();
+  private List<Genre> genre = null;
 
   private String description;
 
