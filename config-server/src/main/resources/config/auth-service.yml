@@ -1,6 +1,11 @@
 server:
   port: 0
 
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
 openapi:
   service:
     title: auth-service doc

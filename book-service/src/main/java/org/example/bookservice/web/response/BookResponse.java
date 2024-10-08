@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookResponse {
+  private Long id;
 
   @JsonProperty(value = "isbn")
   private String ISBN;

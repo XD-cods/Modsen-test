@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
+  Boolean existsBookByISBN(String isbn);
+
   List<Book> findAllBy();
 
   List<Book> findAllByTitleStartsWithIgnoreCase(String prefix);
