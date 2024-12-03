@@ -4,13 +4,12 @@ server:
 spring:
   application:
     name: config-server
-  profiles:
-    active: native
-  config:
-    import: "optional:configserver:"
 
   cloud:
     config:
       server:
         native:
           search-locations: classpath:/config
+        git:
+          clone-on-start: true
+          uri: https://github.com/XD-cods/modsen-test-configs.git

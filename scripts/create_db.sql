@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS library.book (
                                             book_id BIGSERIAL PRIMARY KEY,
                                             ISBN VARCHAR(255) UNIQUE,
                                             title VARCHAR(255),
-                                            genre SMALLINT ARRAY,  -- Используем JSONB для хранения списка жанров
+                                            genre SMALLINT ARRAY,
                                             description TEXT,
                                             author VARCHAR(255)
 );
