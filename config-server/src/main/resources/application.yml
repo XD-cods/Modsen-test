@@ -12,4 +12,12 @@ spring:
           search-locations: classpath:/config
         git:
           clone-on-start: true
-          uri: https://github.com/XD-cods/modsen-test-configs.git
+          uri: ${GIT_URI}
+          private-key: ${SSH_GIT_PRIVATE_KEY}
+          ignore-local-ssh-settings: true
+
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false

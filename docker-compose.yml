@@ -1,0 +1,68 @@
+services:
+  database:
+    image: postgres:17-alpine
+    restart: on-failure:5
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: 1111
+#      POSTGRES_DB: db
+
+  eureka-server:
+    build: /eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - backend
+
+  config-server:
+    build: /config-server
+    container_name: config-server
+    env_file:
+      - ./.env
+#    environment:
+#      GIT_URI: git@github.com:XD-cods/modsen-test-configs.git
+#      SSH_GIT_PRIVATE_KEY: file:~/.ssh/personal_key
+    ports:
+      - "8888:8888"
+    networks:
+      - backend
+
+  auth-service:
+    build: /auth-service
+    container_name: auth-service
+    environment:
+      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
+    networks:
+      - backend
+
+  book-service:
+    build: /book-service
+    container_name: book-service
+    networks:
+      - backend
+
+  library-service:
+    build: /library-service
+    container_name: library-service
+    networks:
+      - backend
+
+  api-gateway:
+    build: /api-gateway
+    ports:
+      - "8080:8080"
+    container_name: api-gateway
+    networks:
+      - backend
+
+volumes:
+    postgres-data:
+
+networks:
+  backend:
+    driver: bridge
