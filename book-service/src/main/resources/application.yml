@@ -2,10 +2,8 @@ spring:
   application:
     name: book-service
   config:
-    import: "configserver:"
+    import: "optional:configserver:"
 
-springdoc:
-  api-docs:
-    path: /api/book/v3/api-docs
-  swagger-ui:
-    path: /api/book/swagger-ui.html
+  cloud:
+    config:
+      uri: http://config-server:8888

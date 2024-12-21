@@ -1,18 +1,33 @@
 services:
   database:
     image: postgres:17-alpine
+    expose:
+      - "5432"
     restart: on-failure:5
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - ./scripts/create_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+      - ./postgres-data:/var/lib/postgresql/data
     env_file:
       - ./.env
-#    environment:
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: 1111
-#      POSTGRES_DB: db
+    networks:
+      - backend
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    volumes:
+      - ./pgadmin-data:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: 1111
+    ports:
+      - "5050:80"
+    networks:
+      - backend
+
 
   eureka-server:
-    build: /eureka-server
+    build: ./eureka-server
     container_name: eureka-server
     ports:
       - "8761:8761"
@@ -20,40 +35,39 @@ services:
       - backend
 
   config-server:
-    build: /config-server
+    build: ./config-server
     container_name: config-server
-    env_file:
-      - ./.env
-#    environment:
-#      GIT_URI: git@github.com:XD-cods/modsen-test-configs.git
-#      SSH_GIT_PRIVATE_KEY: file:~/.ssh/personal_key
     ports:
       - "8888:8888"
+    expose:
+      - "8888"
+    env_file:
+      - ./.env
     networks:
       - backend
 
   auth-service:
-    build: /auth-service
+    build: ./auth-service
     container_name: auth-service
-    environment:
-      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
     networks:
       - backend
+    links:
+      - config-server
 
   book-service:
-    build: /book-service
+    build: ./book-service
     container_name: book-service
     networks:
       - backend
 
   library-service:
-    build: /library-service
+    build: ./library-service
     container_name: library-service
     networks:
       - backend
 
   api-gateway:
-    build: /api-gateway
+    build: ./api-gateway
     ports:
       - "8080:8080"
     container_name: api-gateway
@@ -62,6 +76,7 @@ services:
 
 volumes:
     postgres-data:
+    pgadmin-data:
 
 networks:
   backend:

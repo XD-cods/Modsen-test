@@ -8,14 +8,13 @@ spring:
   cloud:
     config:
       server:
-        native:
-          search-locations: classpath:/config
         git:
           clone-on-start: true
           uri: ${GIT_URI}
           private-key: ${SSH_GIT_PRIVATE_KEY}
           ignore-local-ssh-settings: true
-
+          force-pull: true
+          search-paths: config
 
 eureka:
   client:
