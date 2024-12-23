@@ -4,8 +4,7 @@ spring:
   config:
     import: "configserver:"
 
-springdoc:
-  api-docs:
-    path: /api/book/v3/api-docs
-  swagger-ui:
-    path: /api/book/swagger-ui.html
+  cloud:
+    config:
+      uri: http://config-server:8888
+      fail-fast: true

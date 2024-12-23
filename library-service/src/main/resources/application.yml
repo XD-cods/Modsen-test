@@ -1,11 +1,11 @@
 spring:
   application:
     name: library-service
+    
   config:
     import: "configserver:"
 
-springdoc:
-  api-docs:
-    path: /api/record/v3/api-docs
-  swagger-ui:
-    path: /api/record/swagger-ui.html
+  cloud:
+    config:
+      uri: http://config-server:8888
+      fail-fast: true
