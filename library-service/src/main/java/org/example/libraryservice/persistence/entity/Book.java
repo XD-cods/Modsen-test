@@ -30,6 +30,7 @@ public class Book {
   @Column(name = "book_id")
   private Long id;
 
+  @Column(unique = true)
   private String ISBN;
 
   private String title;

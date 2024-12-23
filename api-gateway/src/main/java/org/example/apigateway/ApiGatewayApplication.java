@@ -23,8 +23,9 @@ public class ApiGatewayApplication {
   public RouteLocator routeLocator(RouteLocatorBuilder builder) {
     return builder
             .routes()
-            .route(r -> r.path("/book-service/v3/api-docs").and().method(HttpMethod.GET).uri("lb://book-service"))
-            .route(r -> r.path("/library-service/v3/api-docs").and().method(HttpMethod.GET).uri("lb://library-service"))
+            .route(r -> r.path("/api/book/v3/api-docs").and().method(HttpMethod.GET).uri("lb://book-service"))
+            .route(r -> r.path("/api/record/v3/api-docs").and().method(HttpMethod.GET).uri("lb://library-service"))
+            .route(r -> r.path("/api/auth/v3/api-docs").and().method(HttpMethod.GET).uri("lb://auth-service"))
             .build();
   }
 

@@ -12,6 +12,10 @@ import org.springframework.stereotype.Component;
 public class BookMapper {
   private final ModelMapper modelMapper;
 
+  public void updateBookFromRequest(BookRequest bookRequest, Book existingBook) {
+    modelMapper.map(bookRequest, existingBook);
+  }
+
   public BookResponse toResponse(final Book book) {
     return modelMapper.map(book, BookResponse.class);
   }

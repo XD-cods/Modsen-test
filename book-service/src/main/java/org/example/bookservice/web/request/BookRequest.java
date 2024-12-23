@@ -16,10 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 public class BookRequest {
 
+  private String title;
+
   @JsonProperty(value = "isbn")
   private String ISBN;
-
-  private String title;
 
   @Builder.Default
   private List<Genre> genre = new ArrayList<>();

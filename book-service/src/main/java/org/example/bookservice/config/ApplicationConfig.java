@@ -32,5 +32,4 @@ public class ApplicationConfig {
             .servers(List.of(new Server().url(url)))
             .info(new Info().title(serviceTitle).version(serviceVersion));
   }
-
 }

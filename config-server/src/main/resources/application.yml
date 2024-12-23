@@ -2,14 +2,21 @@ server:
   port: 8888
 
 spring:
-  profiles:
-    active: native
   application:
     name: config-server
+
   cloud:
     config:
       server:
-        native:
-          search-locations: classpath:/config
-  config:
-    import: "optional:configserver:"
+        git:
+          clone-on-start: true
+          uri: ${GIT_URI}
+          private-key: ${SSH_GIT_PRIVATE_KEY}
+          ignore-local-ssh-settings: true
+          force-pull: true
+          search-paths: config
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false

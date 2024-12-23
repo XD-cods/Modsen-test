@@ -19,6 +19,7 @@
     <modules>
         <module>eureka-server</module>
         <module>config-server</module>
+        <module>auth-service</module>
         <module>book-service</module>
         <module>library-service</module>
         <module>api-gateway</module>
