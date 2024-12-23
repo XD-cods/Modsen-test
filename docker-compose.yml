@@ -7,30 +7,31 @@ services:
     volumes:
       - ./scripts/create_db.sql:/docker-entrypoint-initdb.d/init_db.sql
       - ./postgres-data:/var/lib/postgresql/data
-    env_file:
-      - ./.env
+    environment:
+      POSTGRES_USER: $${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: $${POSTGRES_PASSWORD:-1111}
+      POSTGRES_DB: $${POSTGRES_DB:-postgres}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
     networks:
       - backend
+
 
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: $${PGADMIN_DEFAULT_EMAIL:-postgres@gmail.com}
+      PGADMIN_DEFAULT_PASSWORD: $${PGADMIN_DEFAULT_PASSWORD:-1111}
     volumes:
       - ./pgadmin-data:/var/lib/pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: postgres@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: 1111
     ports:
       - "5050:80"
-    networks:
-      - backend
-
-
-  eureka-server:
-    build: ./eureka-server
-    container_name: eureka-server
-    ports:
-      - "8761:8761"
+    depends_on:
+      database:
+        condition: service_healthy
     networks:
       - backend
 
@@ -41,42 +42,100 @@ services:
       - "8888:8888"
     expose:
       - "8888"
+    volumes:
+      - ./configs:/tmp
+    environment:
+      GIT_URI: ${GIT_URI}
+      SSH_GIT_PRIVATE_KEY: ${SSH_GIT_PRIVATE_KEY}
+    depends_on:
+      database:
+        condition: service_healthy
     env_file:
       - ./.env
     networks:
       - backend
+    healthcheck:
+      test: ["CMD-SHELL", "wget http://localhost:8888/actuator/health"]
+      start_interval: 15s
+      interval: 5s
+      retries: 10
+
+
+  eureka-server:
+    build: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - backend
+    depends_on:
+      config-server:
+        condition: service_healthy
+      database:
+        condition: service_healthy
+
 
   auth-service:
     build: ./auth-service
     container_name: auth-service
     networks:
       - backend
-    links:
-      - config-server
+    depends_on:
+      config-server:
+        condition: service_healthy
+      database:
+        condition: service_healthy
+
 
   book-service:
     build: ./book-service
     container_name: book-service
     networks:
       - backend
+    depends_on:
+      config-server:
+        condition: service_healthy
+      database:
+        condition: service_healthy
+
 
   library-service:
     build: ./library-service
     container_name: library-service
     networks:
       - backend
+    depends_on:
+      config-server:
+        condition: service_healthy
+      database:
+        condition: service_healthy
+
 
   api-gateway:
     build: ./api-gateway
     ports:
       - "8080:8080"
     container_name: api-gateway
+
     networks:
       - backend
+    depends_on:
+      config-server:
+        condition: service_healthy
+      database:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+      library-service:
+        condition: service_started
+      book-service:
+        condition: service_started
+
 
 volumes:
     postgres-data:
     pgadmin-data:
+
 
 networks:
   backend:
