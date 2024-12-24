@@ -11,12 +11,11 @@ on:
       - develop
       - master
 jobs:
-  build-and-tests:
+  build:
     name: Build and test services
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -29,3 +28,9 @@ jobs:
 
       - name: Build with maven
         run: make mavenBuild
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build docker-compose container
+        run: make dockerComposeBuild
