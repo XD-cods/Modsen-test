@@ -1,0 +1,27 @@
+name: GitHub Actions Demo
+run-name: github action demo
+on:
+  pull_request:
+    branches:
+      - develop
+      - master
+  push:
+    branches:
+      - feature/ci-cd
+      - develop
+      - master
+jobs:
+  build-and-tests:
+    name: Build and test services
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4.2.2
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v3.8.0
+
+    - name: Build Docker Images
+      run: |
+        docker-compose build
