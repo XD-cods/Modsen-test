@@ -1,7 +1,6 @@
-mBuild:
-	mvn clean -Dmaven.test.skip  package -e
-mDocker:
+mavenBuild:
+	mvn -q clean -Dmaven.test.skip  package -e
+dockerComposeBuild:
 	docker compose up -d --build
-
 make:
-	make mBuild mDocker
+	make mavenBuild dockerComposeBuild

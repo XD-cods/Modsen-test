@@ -28,4 +28,4 @@ jobs:
           cache: 'maven'
 
       - name: Build with maven
-        run: make mBuild
+        run: make mavenBuild
