@@ -50,8 +50,6 @@ services:
     depends_on:
       database:
         condition: service_healthy
-    env_file:
-      - ./.env
     networks:
       - backend
     healthcheck:
@@ -111,12 +109,12 @@ services:
         condition: service_healthy
 
 
+
   api-gateway:
     build: ./api-gateway
     ports:
       - "8080:8080"
     container_name: api-gateway
-
     networks:
       - backend
     depends_on:
@@ -135,7 +133,6 @@ services:
 volumes:
     postgres-data:
     pgadmin-data:
-
 
 networks:
   backend:
