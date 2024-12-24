@@ -33,4 +33,4 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Build docker-compose container
-        run: make dockerComposeBuild
+        run: make up GIT_URI=${{ Secrets.GIT_URI }} SSH_GIT_PRIVATE_KEY=${{ Secrets.SSH_GIT_PRIVATE_KEY }}

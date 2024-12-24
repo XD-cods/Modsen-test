@@ -8,9 +8,9 @@ services:
       - ./scripts/create_db.sql:/docker-entrypoint-initdb.d/init_db.sql
       - ./postgres-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: $${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: $${POSTGRES_PASSWORD:-1111}
-      POSTGRES_DB: $${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-1111}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -23,8 +23,8 @@ services:
     image: dpage/pgadmin4:latest
     container_name: pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: $${PGADMIN_DEFAULT_EMAIL:-postgres@gmail.com}
-      PGADMIN_DEFAULT_PASSWORD: $${PGADMIN_DEFAULT_PASSWORD:-1111}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-postgres@gmail.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-1111}
     volumes:
       - ./pgadmin-data:/var/lib/pgadmin
     ports:
