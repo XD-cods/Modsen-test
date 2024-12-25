@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    username: postgres
+    password: 1111
+    url: jdbc:postgresql://database:5432/postgres
+  data:
+    jdbc:
+      dialect: jakarta.persistence.jdbc.url
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+      
+openapi:
+  service:
+    version: 1.0.0
+    url: http://api-gateway:8080/
+
+jwt:
+  secret: mySuperSecretKey1234567890123456sasadsdasadasddassadasddasmySuperSecretKey1234567mySuperSecretKey1234567mySuperSecretKey1234567mySuperSecretKey1234567mySuperSecretKey1234567mySuperSecretKey1234567mySuperSecretKey1234567
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always

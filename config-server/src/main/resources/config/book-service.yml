@@ -1,0 +1,17 @@
+server:
+  port: 0
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+openapi:
+  service:
+    title: book-service doc
+    
+springdoc:
+  api-docs:
+    path: /api/book/v3/api-docs
+  swagger-ui:
+    path: /api/book/swagger-ui.html

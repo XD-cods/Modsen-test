@@ -1,4 +1,3 @@
-# Определяем переменные с возможными значениями по умолчанию
 POSTGRES_USER ?= postgres
 POSTGRES_PASSWORD ?= 1111
 POSTGRES_DB ?= postgres
@@ -7,7 +6,6 @@ PGADMIN_DEFAULT_PASSWORD ?= 1111
 GIT_URI ?= git@your-repo.git
 SSH_GIT_PRIVATE_KEY ?= your-private-key-content
 
-# Основная команда для создания .env файла и запуска docker-compose
 up:
 	export POSTGRES_USER=${POSTGRES_USER}
 	export POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -26,8 +24,8 @@ up-env:
 package:
 	mvn clean -Dmaven.test.skip  package -e
 
-makeEnv:
+build-env:
 	make package up-env
 
-makeArgs:
+build:
 	make package up

@@ -48,58 +48,47 @@
 
 ### Перед запуском
 
-Установите postgreSQL и добавьте данные в config-server/src/main/resources/config
-поменять в application.yml на свои значения и можете поставить свой secret для аунефикации минимум 32 символа
+- Установить docker
+- Установить make (для облегченного запуска приложения)
 
-```yaml
-    username: postgres
-    password: 1111
-    url: jdbc:postgresql://localhost:5432/postgres
-    
-jwt:
-   secret: your key
-```
-
-Выполните скрипт создания таблиц расположенный в папке sripts create_db.sql
+А также в [config сервере](./config-server/src/main/resources/application.yml) поменять spring.profiles.active на default если вы хотите получить настройки с config сервера 
 
 ### Запуск приложения
 
-выполнить команду для упарковки каждого микросервиса:
+Если вы хотите запустить микросервисы с помощью .env файла, то создайте его в корне проекта
+с переменными:
 
-```
-make mBuild
-```
-
-или
-
-```
-mvn clean package -DskipTests
-```
-
-выполнить запуск jar файлов
-
-```
-java -jar eureka-server/target/eureka-server-0.0.1-SNAPSHOT.jar
+```properties
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=1111
+POSTGRES_DB=postgres
+PGADMIN_DEFAULT_EMAIL=postgres@gmail.com
+PGADMIN_DEFAULT_PASSWORD=1111
+GIT_URI=your git uri for ssh
+SSH_GIT_PRIVATE_KEY=your ssh key
 ```
 
-```
-java -jar conig-server/target/config-server-0.0.1-SNAPSHOT.jar
-```
-
-```
-java -jar library-service/target/library-service-0.0.1-SNAPSHOT.jar
+Выполните команду:
+```shell
+   make build-env
 ```
 
+или вы можете выполнить в git bash:
+```shell
+   make build
 ```
-java -jar book-service/target/book-service-0.0.1-SNAPSHOT.jar
-```
+что создаст docker-compose образ с default значениями
 
-```
-java -jar auth-service/target/auth-service-0.0.1-SNAPSHOT.jar
-```
+### Pgadmin
+Также есть админка для взаимодействия с базой данных
 
-```
-java -jar api-gateway/target/api-gateway-0.0.1-SNAPSHOT.jar
+<localhost:5050>
+
+по умолчанию стоят следующие данные для входа:
+
+```properties
+PGADMIN_DEFAULT_EMAIL=postgres@gmail.com
+PGADMIN_DEFAULT_PASSWORD=1111
 ```
 
 ### Swagger
