@@ -11,7 +11,7 @@ spring:
         git:
           clone-on-start: true
           uri: ${GIT_URI}
-          private-key: ${SSH_GIT_PRIVATE_KEY}
+          host-key: ${SSH_GIT_PRIVATE_KEY}
           ignore-local-ssh-settings: true
           force-pull: true
           search-paths: config
