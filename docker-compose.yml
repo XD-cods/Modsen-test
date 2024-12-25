@@ -8,9 +8,9 @@ services:
       - ./scripts/create_db.sql:/docker-entrypoint-initdb.d/init_db.sql
       - ./postgres-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: $${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: $${POSTGRES_PASSWORD:-1111}
-      POSTGRES_DB: $${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-1111}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -18,13 +18,12 @@ services:
     networks:
       - backend
 
-
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: $${PGADMIN_DEFAULT_EMAIL:-postgres@gmail.com}
-      PGADMIN_DEFAULT_PASSWORD: $${PGADMIN_DEFAULT_PASSWORD:-1111}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-postgres@gmail.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-1111}
     volumes:
       - ./pgadmin-data:/var/lib/pgadmin
     ports:
@@ -50,16 +49,13 @@ services:
     depends_on:
       database:
         condition: service_healthy
-    env_file:
-      - ./.env
     networks:
       - backend
     healthcheck:
       test: ["CMD-SHELL", "wget http://localhost:8888/actuator/health"]
-      start_interval: 15s
+      start_period: 15s
       interval: 5s
       retries: 10
-
 
   eureka-server:
     build: ./eureka-server
@@ -74,7 +70,6 @@ services:
       database:
         condition: service_healthy
 
-
   auth-service:
     build: ./auth-service
     container_name: auth-service
@@ -85,7 +80,6 @@ services:
         condition: service_healthy
       database:
         condition: service_healthy
-
 
   book-service:
     build: ./book-service
@@ -98,7 +92,6 @@ services:
       database:
         condition: service_healthy
 
-
   library-service:
     build: ./library-service
     container_name: library-service
@@ -110,13 +103,11 @@ services:
       database:
         condition: service_healthy
 
-
   api-gateway:
     build: ./api-gateway
     ports:
       - "8080:8080"
     container_name: api-gateway
-
     networks:
       - backend
     depends_on:
@@ -131,11 +122,9 @@ services:
       book-service:
         condition: service_started
 
-
 volumes:
-    postgres-data:
-    pgadmin-data:
-
+  postgres-data:
+  pgadmin-data:
 
 networks:
   backend:

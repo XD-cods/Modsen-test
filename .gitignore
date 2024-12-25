@@ -32,3 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 .env
+
+### Docker configs ###
+./postgres-data/
+./pgadmin-data/
+./configs/
