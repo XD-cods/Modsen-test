@@ -51,7 +51,7 @@ jobs:
         run: docker-compose config
 
       - name: Build docker-compose container
-        run: make up GIT_URI=${{ secrets.GIT_URI }} SSH_GIT_PRIVATE_KEY=${{ secrets.SSH_GIT_PRIVATE_KEY }}
+        run: make up GIT_URI=${{ secrets.GIT_URI }} SSH_GIT_PRIVATE_KEY=${{ secrets.GITHUB_TOKEN }}
 
       - name: Check Docker Compose Logs
         if: failure()
