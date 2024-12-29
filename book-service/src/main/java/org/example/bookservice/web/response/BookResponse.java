@@ -1,11 +1,11 @@
 package org.example.bookservice.web.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.bookservice.persistence.entity.Genre;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +14,16 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class BookResponse {
   private Long id;
 
-  @JsonProperty(value = "isbn")
   private String ISBN;
 
   private String title;
 
   @Builder.Default
-  private List<Genre> genre = new ArrayList<>();
+  private List<GenreResponse> genre = new ArrayList<>();
 
   private String description;
 

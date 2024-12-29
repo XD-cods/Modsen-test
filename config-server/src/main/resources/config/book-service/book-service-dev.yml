@@ -1,0 +1,37 @@
+server:
+  port: 0
+
+spring:
+  datasource:
+    username: postgres
+    password: 1111
+    url: jdbc:postgresql://localhost:5432/postgres
+
+openapi:
+  service:
+    title: book-service doc
+springdoc:
+  openapi:
+    service:
+      version: 1.0.0
+      url: http://localhost:8080/
+  api-docs:
+    path: /api/book/v3/api-docs
+  swagger-ui:
+    path: /api/book/swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

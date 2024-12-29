@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: dev
   application:
     name: api-gateway
   config:
@@ -6,5 +8,5 @@ spring:
 
   cloud:
     config:
-      uri: http://config-server:8888
+      uri: http://localhost:8888
       fail-fast: true

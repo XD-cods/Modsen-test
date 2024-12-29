@@ -1,13 +1,17 @@
 server:
   port: 8888
 
+
 spring:
+  profiles:
+    active: native # used if you want config from locals file (delete if you need configs from git)
   application:
     name: config-server
-
   cloud:
     config:
       server:
+        native:
+          searchLocations: "[classpath:/, classpath:/config, classpath:/config/{application}, classpath:/config/{application}/{application}-{profile}]"
         git:
           clone-on-start: true
           uri: ${GIT_URI}
@@ -15,6 +19,8 @@ spring:
           ignore-local-ssh-settings: true
           force-pull: true
           search-paths: config
+  config:
+    import: "classpath:application.yml"
 
 eureka:
   client:

@@ -1,0 +1,7 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+jwt:
+  secret: mySuperSecretKey1234567890123456sasadsdasadasddassadasddasmySuperSecretKey1234567mySuperSecretKey1234567mySuperSecretKey1234567mySuperSecretKey1234567mySuperSecretKey1234567mySuperSecretKey1234567mySuperSecretKey1234567

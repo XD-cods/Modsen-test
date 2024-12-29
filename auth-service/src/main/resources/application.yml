@@ -1,11 +1,12 @@
 spring:
+  profiles:
+    active: dev
   application:
     name: auth-service
+  config:
+    import: "configserver:"
 
   cloud:
     config:
-      uri: http://config-server:8888
+      uri: http://localhost:8888
       fail-fast: true
-
-  config:
-    import: "configserver:"

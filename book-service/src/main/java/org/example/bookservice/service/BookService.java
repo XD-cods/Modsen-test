@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.bookservice.exception.BadRequestException;
 import org.example.bookservice.exception.NotFoundException;
 import org.example.bookservice.persistence.entity.Book;
-import org.example.bookservice.persistence.entity.Genre;
 import org.example.bookservice.persistence.repository.BookRepository;
+import org.example.bookservice.persistence.repository.GenreRepository;
 import org.example.bookservice.util.feign.LibraryServiceClient;
 import org.example.bookservice.util.mapper.BookMapper;
 import org.example.bookservice.web.request.BookRequest;
@@ -21,11 +21,12 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class BookService {
+  private static final String NOT_FOUND_BOOK_MESSAGE = "Book not found by id: %d";
+  private static final String EXIST_BOOK_BY_ISBN_MESSAGE = "Book already exist by isbn: %s";
   private final BookRepository bookRepository;
   private final BookMapper bookMapper;
   private final LibraryServiceClient libraryServiceClient;
-  private static final String NOT_FOUND_BOOK_MESSAGE = "Book not found by id: %d";
-  private static final String EXIST_BOOK_BY_ISBN_MESSAGE = "Book already exist by isbn: %s";
+  private final GenreRepository genreRepository;
 
   @Transactional
   public List<BookResponse> getAllBooks(Optional<String> optionalPrefixName) {
@@ -51,6 +52,7 @@ public class BookService {
             .orElseThrow(() -> new NotFoundException(String.format(NOT_FOUND_BOOK_MESSAGE, id)));
   }
 
+
   public BookResponse addBook(BookRequest bookRequest) {
 
     if (bookRepository.existsBookByISBN(bookRequest.getISBN())) {
@@ -58,10 +60,14 @@ public class BookService {
     }
 
     Book book = bookMapper.requestToEntity(bookRequest);
-    book = bookRepository.save(book);
-    bookRequest = bookMapper.toRequest(book);
 
-    libraryServiceClient.addLibraryRecord(bookRequest, book.getId());
+    if (bookRequest.getGenre() != null) {
+      book.setGenre(genreRepository.findAllById(bookRequest.getGenre()));
+    }
+
+    book = bookRepository.save(book);
+
+    libraryServiceClient.addLibraryRecord(book.getId());
     return bookMapper.toResponse(book);
   }
 
@@ -87,10 +93,9 @@ public class BookService {
             .orElseThrow(() -> new NotFoundException(String.format(NOT_FOUND_BOOK_MESSAGE, id)));
 
     bookMapper.updateBookFromRequest(bookRequest, existingBook);
-    List<Genre> bookRequestGenre = bookRequest.getGenre();
 
-    if (bookRequestGenre != null) {
-      existingBook.setGenre(bookRequestGenre);
+    if (bookRequest.getGenre() != null) {
+      existingBook.setGenre(genreRepository.findAllById(bookRequest.getGenre()));
     }
 
     bookRepository.save(existingBook);
