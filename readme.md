@@ -51,7 +51,8 @@
 - Установить docker
 - Установить make (для облегченного запуска приложения)
 
-А также в [config сервере](./config-server/src/main/resources/application.yml) поменять spring.profiles.active на default если вы хотите получить настройки с config сервера 
+А также в [config сервере](./config-server/src/main/resources/application.yml) поменять spring.profiles.active на
+default если вы хотите получить настройки с config сервера
 
 ### Запуск приложения
 
@@ -69,17 +70,21 @@ SSH_GIT_PRIVATE_KEY=your ssh key
 ```
 
 Выполните команду:
+
 ```shell
    make build-env
 ```
 
 или вы можете выполнить в git bash:
+
 ```shell
    make build
 ```
+
 что создаст docker-compose образ с default значениями
 
 ### Pgadmin
+
 Также есть админка для взаимодействия с базой данных
 
 <localhost:5050>

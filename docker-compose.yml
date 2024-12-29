@@ -5,14 +5,15 @@ services:
       - "5432"
     restart: on-failure:5
     volumes:
-      - ./scripts/create_db.sql:/docker-entrypoint-initdb.d/init_db.sql
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./scripts/initdb.sql:/docker-entrypoint-initdb.d/init_db.sql
+      - postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-1111}
       POSTGRES_DB: ${POSTGRES_DB:-postgres}
+
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       retries: 5
     networks:
@@ -25,7 +26,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-postgres@gmail.com}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-1111}
     volumes:
-      - ./pgadmin-data:/var/lib/pgadmin
+      - pgadmin-data:/var/lib/pgadmin
     ports:
       - "5050:80"
     depends_on:
@@ -42,7 +43,7 @@ services:
     expose:
       - "8888"
     volumes:
-      - ./configs:/tmp
+      - config-date:/tmp
     environment:
       GIT_URI: ${GIT_URI}
       SSH_GIT_PRIVATE_KEY: ${SSH_GIT_PRIVATE_KEY}
@@ -52,7 +53,7 @@ services:
     networks:
       - backend
     healthcheck:
-      test: ["CMD-SHELL", "wget http://localhost:8888/actuator/health"]
+      test: [ "CMD-SHELL", "wget http://localhost:8888/actuator/health" ]
       start_period: 15s
       interval: 5s
       retries: 10
@@ -125,6 +126,7 @@ services:
 volumes:
   postgres-data:
   pgadmin-data:
+  config-date:
 
 networks:
   backend:

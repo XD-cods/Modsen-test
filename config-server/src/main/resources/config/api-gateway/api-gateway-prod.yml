@@ -1,5 +1,5 @@
 server:
-  port: 8080  
+  port: 8080
 
 spring:
   cloud:
@@ -36,3 +36,10 @@ springdoc:
       - url: /api/record/v3/api-docs
         name: Library Service
         display-name: Library Service
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka

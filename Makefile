@@ -29,3 +29,9 @@ build-env:
 
 build:
 	make package up
+
+delete-volumes:
+	docker volume rm modsen-test_postgres-data modsen-test_config-date
+
+down:
+	docker compose down

@@ -3,12 +3,9 @@ package org.example.libraryservice.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.libraryservice.exception.NotFoundException;
-import org.example.libraryservice.persistence.entity.Book;
 import org.example.libraryservice.persistence.entity.LibraryRecord;
 import org.example.libraryservice.persistence.repository.LibraryRecordRepository;
-import org.example.libraryservice.util.mapper.BookMapper;
 import org.example.libraryservice.util.mapper.LibraryRecordMapper;
-import org.example.libraryservice.web.request.BookRequest;
 import org.example.libraryservice.web.response.LibraryRecordResponse;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +18,14 @@ import java.util.stream.Stream;
 public class LibraryRecordService {
   private final LibraryRecordRepository libraryRecordRepository;
   private final LibraryRecordMapper libraryRecordMapper;
-  private final BookMapper bookMapper;
   private final static String NOT_FOUND_RECORD_MESSAGE = "Book not found by id: %d";
 
   @Transactional
-  public void addBookToLibraryRecord(BookRequest bookRequest, Long bookId) {
+  public void addBookToLibraryRecord(Long bookId) {
 
-    Book book = bookMapper.requestToEntity(bookRequest);
-    book.setId(bookId);
     LibraryRecord libraryRecord = LibraryRecord
             .builder()
-            .book(book)
+            .bookId(bookId)
             .build();
 
     libraryRecordRepository.save(libraryRecord);
