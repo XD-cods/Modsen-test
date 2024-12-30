@@ -86,9 +86,4 @@ public class LibraryRecordController {
           @Parameter(description = "ID книги", required = true) @PathVariable("recordId") Long recordId) {
     return ResponseEntity.ok(libraryRecordService.releaseBook(recordId));
   }
-
-  @PostMapping
-  public void addLibraryRecord(@RequestParam("book_id") Long bookId) {
-    libraryRecordService.addBookToLibraryRecord(bookId);
-  }
 }
