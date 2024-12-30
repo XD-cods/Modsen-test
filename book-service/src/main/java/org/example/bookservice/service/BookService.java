@@ -8,7 +8,7 @@ import org.example.bookservice.exception.NotFoundException;
 import org.example.bookservice.persistence.entity.Book;
 import org.example.bookservice.persistence.repository.BookRepository;
 import org.example.bookservice.persistence.repository.GenreRepository;
-import org.example.bookservice.util.feign.LibraryServiceClient;
+import org.example.bookservice.util.kafka.KafkaProducer;
 import org.example.bookservice.util.mapper.BookMapper;
 import org.example.bookservice.web.request.BookRequest;
 import org.example.bookservice.web.response.BookResponse;
@@ -25,8 +25,8 @@ public class BookService {
   private static final String EXIST_BOOK_BY_ISBN_MESSAGE = "Book already exist by isbn: %s";
   private final BookRepository bookRepository;
   private final BookMapper bookMapper;
-  private final LibraryServiceClient libraryServiceClient;
   private final GenreRepository genreRepository;
+  private final KafkaProducer kafkaProducer;
 
   @Transactional
   public List<BookResponse> getAllBooks(Optional<String> optionalPrefixName) {
@@ -67,7 +67,7 @@ public class BookService {
 
     book = bookRepository.save(book);
 
-    libraryServiceClient.addLibraryRecord(book.getId());
+    kafkaProducer.sendBookCreatedMessage(book.getId());
     return bookMapper.toResponse(book);
   }
 
